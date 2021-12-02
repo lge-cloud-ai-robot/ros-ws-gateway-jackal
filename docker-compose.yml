@@ -1,0 +1,58 @@
+version: "3.7"
+
+services:
+    jackal_sim:
+        build: jackal_sim/. 
+        depends_on:
+            - rosmaster
+        container_name: jackal_sim
+        hostname: jackal_sim
+        networks: 
+            - rosdocker
+        volumes:
+            - jackal-gazebo-data:/root/.gazebo
+            - /tmp/.X11-unix:/tmp/.X11-unix
+            - /tmp/.docker.xauth:/tmp/.docker.xauth
+        working_dir: /root/.urdfs
+        command: /bin/bash -c 'source /root/catkin_ws/devel/setup.bash && roslaunch my_warehouse.launch'
+        environment:
+            ROS_HOST_NAME: jackal_sim
+            ROS_MASTER_URI: http://rosmaster:11311
+            DISPLAY: 
+            QT_X11_NO_MITSHM: 1
+            XAUTHORITY: /tmp/.docker.xauth
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          count: 1
+                          capabilities: [gpu]
+
+    ros1_gw:
+        build: 
+            context: https://github.com/lge-cloud-ai-robot/ros1-ws-gateway.git#main
+        container_name: ros1_gw
+        hostname: ros1_gw
+        depends_on:
+            - rosmaster
+        environment:
+            ROS_HOST_NAME: ros1_gw
+            ROS_MASTER_URI: http://rosmaster:11311
+        networks: 
+            - rosdocker
+        ports:
+            - "9001:9000"
+    rosmaster:
+        image: ros:melodic-ros-core
+        container_name: rosmaster
+        hostname: rosmaster
+        networks: 
+            - rosdocker
+#        ports:
+#            - "11311:11311"
+        command: roscore
+networks:
+    rosdocker:
+volumes:
+    jackal-gazebo-data:

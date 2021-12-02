@@ -1,0 +1,20 @@
+<launch>
+<!-- Launch World -->
+<arg name="gui" default="true"/>
+
+<include file="$(find aws_robomaker_small_warehouse_world)/launch/no_roof_small_warehouse.launch">
+    <arg name="gui" value="$(arg gui)"/>
+</include>
+<arg name="x" default="0.0"/>
+<arg name="y" default="0.0"/>
+<arg name="z" default="0.2"/>
+<arg name="yaw" default="0.0"/>
+<include file="$(find jackal_gazebo)/launch/spawn_jackal.launch">
+    <arg name="x" value="$(arg x)"/>
+    <arg name="y" value="$(arg y)"/>
+    <arg name="z" value="$(arg z)"/>
+    <arg name="yaw" value="$(arg yaw)"/>
+</include>
+<!-- node name="republish" pkg="image_transport" type="republish" respawn="true"
+    args="raw in:=/realsense/color/image_raw compressed out:=/robot_cam/jpeg_image"/ -->
+</launch>
