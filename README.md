@@ -1,4 +1,4 @@
-# ROS-WS-GATEWAY Example(ros-ws-gateway with Cloisim)
+# ROS-WS-GATEWAY Example(ros-ws-gateway with Gazebo-Jackal)
 
 ## BUILD
 ```
