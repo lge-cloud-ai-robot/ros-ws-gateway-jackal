@@ -14,7 +14,7 @@ services:
             - /tmp/.X11-unix:/tmp/.X11-unix
             - /tmp/.docker.xauth:/tmp/.docker.xauth
         working_dir: /root/.urdfs
-        command: /bin/bash -c 'source /root/catkin_ws/devel/setup.bash && roslaunch my_warehouse.launch'
+        command: /bin/bash -c 'source /root/catkin_ws/devel/setup.bash && roslaunch --wait my_warehouse.launch'
         environment:
             ROS_HOST_NAME: jackal_sim
             ROS_MASTER_URI: http://rosmaster:11311
